@@ -18,6 +18,6 @@ class AUDIOSUBSYSTEM_API UComentatorDeveloperSettings : public UDeveloperSetting
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category="General", AdvancedDisplay)
-	TSoftObjectPtr<USoundBase> FinishHimSound;
+	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category="General")
+	TSoftObjectPtr<UDataTable> SoundsTable;
 };

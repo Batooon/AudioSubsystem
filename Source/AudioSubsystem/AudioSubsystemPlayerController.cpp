@@ -17,3 +17,8 @@ void AAudioSubsystemPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
 	}
 }
+
+void AAudioSubsystemPlayerController::PostLoad()
+{
+	Super::PostLoad();
+}

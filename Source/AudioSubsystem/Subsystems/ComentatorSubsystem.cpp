@@ -4,7 +4,10 @@
 #include "ComentatorSubsystem.h"
 
 #include "ComentatorDeveloperSettings.h"
+#include "AudioSubsystem/FSSound.h"
 #include "Kismet/GameplayStatics.h"
+
+struct FSSound;
 
 void UComentatorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -12,10 +15,28 @@ void UComentatorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	const UComentatorDeveloperSettings* ComentatorSettings = GetDefault<UComentatorDeveloperSettings>();
 
-	FinishHimSound = ComentatorSettings->FinishHimSound.LoadSynchronous();
+	Sounds = ComentatorSettings->SoundsTable.LoadSynchronous();
 }
 
-void UComentatorSubsystem::SayFinishHim()
+void UComentatorSubsystem::PlaySound(const FName soundName)
 {
-	UGameplayStatics::PlaySound2D(this, FinishHimSound);
+	if(const FSSound* sound = GetSound(soundName, nullptr))
+	{
+		UGameplayStatics::PlaySound2D(this, sound->Sound);
+	}
+}
+
+void UComentatorSubsystem::PlaySoundFromEmiter(const FName soundName, const USceneComponent* emiter)
+{
+	if(const FSSound* sound = GetSound(soundName, nullptr))
+	{
+		UGameplayStatics::PlaySoundAtLocation(emiter, sound->Sound,
+			emiter->GetComponentLocation(),
+			emiter->GetComponentRotation());
+	}
+}
+
+FSSound* UComentatorSubsystem::GetSound(const FName& soundName, const TCHAR* ContextString) const
+{
+	return Sounds->FindRow<FSSound>(soundName, ContextString);
 }

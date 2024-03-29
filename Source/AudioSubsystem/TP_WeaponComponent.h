@@ -8,12 +8,17 @@
 
 class AAudioSubsystemCharacter;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShoot);
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class AUDIOSUBSYSTEM_API UTP_WeaponComponent : public USkeletalMeshComponent
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnShoot OnShoot;
+	
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TSubclassOf<class AAudioSubsystemProjectile> ProjectileClass;
@@ -48,6 +53,7 @@ public:
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
+	
 
 protected:
 	/** Ends gameplay for this component. */

@@ -6,7 +6,6 @@
 #include "AudioSubsystemProjectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
-#include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -45,12 +44,6 @@ void UTP_WeaponComponent::Fire()
 		}
 	}
 	
-	// Try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
-	}
-	
 	// Try and play a firing animation if specified
 	if (FireAnimation != nullptr)
 	{
@@ -61,6 +54,8 @@ void UTP_WeaponComponent::Fire()
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
 	}
+	
+	OnShoot.Broadcast();
 }
 
 void UTP_WeaponComponent::AttachWeapon(AAudioSubsystemCharacter* TargetCharacter)

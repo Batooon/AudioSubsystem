@@ -6,6 +6,8 @@
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "ComentatorSubsystem.generated.h"
 
+struct FSSound;
+
 /**
  * 
  */
@@ -15,11 +17,17 @@ class AUDIOSUBSYSTEM_API UComentatorSubsystem : public ULocalPlayerSubsystem
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
-	TObjectPtr<USoundBase> FinishHimSound;
-
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	UFUNCTION(BlueprintCallable)
+	void PlaySound(const FName soundName);
 
 	UFUNCTION(BlueprintCallable)
-	void SayFinishHim();
+	void PlaySoundFromEmiter(const FName soundName, const USceneComponent* emiter);
+
+protected:
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+private:
+	UDataTable* Sounds;
+
+	FSSound* GetSound(const FName& soundName, const TCHAR* ContextString) const;
 };
